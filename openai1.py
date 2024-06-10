@@ -16,7 +16,7 @@ import traceback
 from openai import OpenAI
 import time
 
-def recognize_speech_from_microphone():
+def recognize_speech_from_microphone():  #語音辨識
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
         print("請說點什麼...")
@@ -34,7 +34,7 @@ def recognize_speech_from_microphone():
             print("無法從 Google 語音識別服務請求結果; {0}".format(e))
             return None
 
-def get_news(api_key):
+def get_news(api_key):  #連接新聞api並回傳新聞json
     url = f"https://gnews.io/api/v4/top-headlines?&category=general&country=tw&max=10&apikey={api_key}"
     response = requests.get(url)
     if response.status_code == 200:
@@ -44,23 +44,13 @@ def get_news(api_key):
         print("Failed to retrieve news")
         return None
         
-def summarize_news(article, index):
-    nlp = spacy.load("en_core_web_sm")
-    doc = nlp(article)
-    sentences = [sent for sent in doc.sents]
-    if len(sentences) > 3:
-        summary = " ".join([str(sentences[0]), str(sentences[1]), str(sentences[2])])
-    else:
-        summary = article
-    return f"這是第{index}則新聞: {summary}"
-
-async def text_to_speech(text):
+async def text_to_speech(text):  #將文字轉成mp3檔
     communicate = edge_tts.Communicate(text, "zh-TW-YunJheNeural")
     filename = "output.mp3"
     await communicate.save(filename)
     play_audio(filename)
 
-def play_audio(filename):
+def play_audio(filename):  #播放mp3
     pygame.mixer.init()
     pygame.mixer.music.load(filename)
     pygame.mixer.music.play()
@@ -82,7 +72,7 @@ def connect_to_speaker(device_address):
         # 关闭套接字
         sock.close()
 
-def get_weather(latitude, longitude):
+def get_weather(latitude, longitude):  #連接中央氣象局天氣api並回傳天氣格式
     url = "https://opendata.cwa.gov.tw/linked/graphql"
     authorization = "CWA-51094D0B-895A-4CF7-B46A-250ACBBEC8FF"
     headers = {
@@ -239,12 +229,12 @@ def get_weather(latitude, longitude):
         print("Failed to get weather data.")
         return None
 
-def find_closest_time(data):
+def find_closest_time(data):  #找最接近現在的天氣預報時間
     now = datetime.now()
     closest_time = min(data, key=lambda x: abs(now - datetime.fromisoformat(x['dataTime'])))
     return datetime.fromisoformat(closest_time['dataTime'])
 
-def get_closest_forecast(weather_data, current_time):
+def get_closest_forecast(weather_data, current_time):  #獲取最接近現在的天氣預報時間之資料
     # 初始化最接近当前时间的预报数据
     closest_at = None
     closest_WeatherDescription = None
@@ -267,7 +257,7 @@ def get_closest_forecast(weather_data, current_time):
 
     return closest_at, closest_WeatherDescription
 
-def get_openai(user_command):
+def get_openai(user_command):  #連接openai api並請他判斷使用者回答
     client = OpenAI(
     api_key=("sk-proj-hQ5Lunj0YUPssFskrlxcT3BlbkFJvdiN4K5LWH1h0Xhzwomj"),
 )
@@ -285,7 +275,7 @@ def get_openai(user_command):
     print(response.choices[0].message.content)
     return assistant_reply
 
-def openai_in_news(news_summary,user_command_news):
+def openai_in_news(news_summary,user_command_news):  #連接openai api並請他判斷使用者欲知道的新聞摘要
     client = OpenAI(
     api_key=("sk-proj-hQ5Lunj0YUPssFskrlxcT3BlbkFJvdiN4K5LWH1h0Xhzwomj"),
 )
