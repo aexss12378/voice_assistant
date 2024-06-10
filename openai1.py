@@ -1,6 +1,5 @@
 import speech_recognition as sr
 import requests
-import spacy
 import pygame
 import edge_tts
 import asyncio
