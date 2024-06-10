@@ -15,8 +15,6 @@ from datetime import datetime, timedelta
 import traceback
 from openai import OpenAI
 import time
-import os
-import keyboard
 
 def recognize_speech_from_microphone():
     recognizer = sr.Recognizer()
