@@ -3,7 +3,6 @@ import requests
 import pygame
 import edge_tts
 import asyncio
-import bluetooth
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By

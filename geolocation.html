@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>地理位置獲取示例</title>
+</head>
+<body>
+<h1>地理位置獲取示例</h1>
+<p id="location"></p>
+
+<script>
+if ("geolocation" in navigator) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    var locationInfo = "緯度：" + latitude + ", 經度：" + longitude;
+    document.getElementById("location").innerText = locationInfo;
+  }, function(error) {
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+        document.getElementById("location").innerText = "使用者拒絕了地理位置請求。";
+        break;
+      case error.POSITION_UNAVAILABLE:
+        document.getElementById("location").innerText = "無法獲取使用者的位置。";
+        break;
+      case error.TIMEOUT:
+        document.getElementById("location").innerText = "請求獲取位置超時。";
+        break;
+      case error.UNKNOWN_ERROR:
+        document.getElementById("location").innerText = "發生了一個未知的錯誤。";
+        break;
+    }
+  });
+} else {
+  document.getElementById("location").innerText = "您的瀏覽器不支持地理位置功能。";
+}
+</script>
+</body>
+</html>
