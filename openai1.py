@@ -307,11 +307,6 @@ def main():
             else:
                 print("未找到新聞")
                 asyncio.run(text_to_speech("未找到新聞"))
-        elif "藍牙" in command:
-                speaker_address = "F8:23:87:31:79:F6"
-                print("Connecting to Bluetooth speaker...")
-                connect_to_speaker(speaker_address)
-
         elif "天氣" in openai_response:
                                 # 啟動 Chrome 瀏覽器
             driver = webdriver.Chrome()
