@@ -283,7 +283,7 @@ def main():
         
     if user_command:
         openai_response = get_openai(user_command)
-        command = user_command.lower()
+        user_command = user_command.lower()
         if "新聞" in openai_response:
             # 使用你的 API 密鑰
             api_key = '4cd7669f4577581282b9d3bcf3123047' #新聞api
