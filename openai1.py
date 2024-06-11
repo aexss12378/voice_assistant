@@ -56,20 +56,6 @@ def play_audio(filename):  #播放mp3
         pygame.time.Clock().tick(10)
     pygame.mixer.quit()    
 
-def connect_to_speaker(device_address):
-    # 创建 RFCOMM 套接字
-    sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-
-    try:
-        # 连接到蓝牙喇叭
-        sock.connect((device_address, 1))
-        print("Connected to Bluetooth speaker.")
-    except Exception as e:
-        print("Failed to connect to Bluetooth speaker:", e)
-    finally:
-        # 关闭套接字
-        sock.close()
-
 def get_weather(latitude, longitude):  #連接中央氣象局天氣api並回傳天氣格式
     url = "https://opendata.cwa.gov.tw/linked/graphql"
     authorization = "CWA-51094D0B-895A-4CF7-B46A-250ACBBEC8FF"
