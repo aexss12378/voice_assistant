@@ -58,7 +58,7 @@ def play_audio(filename):  #播放mp3
 
 def get_weather(latitude, longitude):  #連接中央氣象局天氣api並回傳天氣格式
     url = "https://opendata.cwa.gov.tw/linked/graphql"
-    authorization = "CWA-51094D0B-895A-4CF7-B46A-250ACBBEC8FF"
+    authorization = ""  #這裡要放中央氣象局的憑證
     headers = {
         "Authorization": authorization,
         "Content-Type": "application/json",
@@ -243,7 +243,7 @@ def get_closest_forecast(weather_data, current_time):  #獲取最接近現在的
 
 def get_openai(user_command):  #連接openai api並請他判斷使用者回答
     client = OpenAI(
-    api_key=("sk-proj-hQ5Lunj0YUPssFskrlxcT3BlbkFJvdiN4K5LWH1h0Xhzwomj"),
+    api_key=(""),  #這裡要放openai之api key
 )
 
     response = client.chat.completions.create(
@@ -261,7 +261,7 @@ def get_openai(user_command):  #連接openai api並請他判斷使用者回答
 
 def openai_in_news(news_summary,user_command_news):  #連接openai api並請他判斷使用者欲知道的新聞摘要
     client = OpenAI(
-    api_key=("sk-proj-hQ5Lunj0YUPssFskrlxcT3BlbkFJvdiN4K5LWH1h0Xhzwomj"),
+    api_key=(""),  #這裡要放openai之api key
 )
 
     response = client.chat.completions.create(
@@ -279,7 +279,7 @@ def openai_in_news(news_summary,user_command_news):  #連接openai api並請他�
 
 def openai_in_weather(closest_WeatherDescription):  #連接openai api給予該天氣狀況下的建議
     client = OpenAI(
-    api_key=("sk-proj-hQ5Lunj0YUPssFskrlxcT3BlbkFJvdiN4K5LWH1h0Xhzwomj"),
+    api_key=(""),  #這裡要放openai之api key
 )
 
     response = client.chat.completions.create(
@@ -303,7 +303,7 @@ def main():
         user_command = user_command.lower()
         if "新聞" in openai_response:
             # 使用你的 API 密鑰
-            api_key = '4cd7669f4577581282b9d3bcf3123047' #新聞api
+            api_key = '' #新聞api   #這裡要放Gnews之api key
             # 步驟2：新聞抓取
             articles = get_news(api_key)
             
