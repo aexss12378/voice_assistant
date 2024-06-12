@@ -277,7 +277,7 @@ def openai_in_news(news_summary,user_command_news):  #連接openai api並請他�
     print(response.choices[0].message.content)
     return assistant_reply
 
-def openai_in_weather(closest_WeatherDescription):
+def openai_in_weather(closest_WeatherDescription):  #連接openai api給予該天氣狀況下的建議
     client = OpenAI(
     api_key=("sk-proj-hQ5Lunj0YUPssFskrlxcT3BlbkFJvdiN4K5LWH1h0Xhzwomj"),
 )
