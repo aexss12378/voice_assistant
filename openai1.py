@@ -277,6 +277,23 @@ def openai_in_news(news_summary,user_command_news):  #連接openai api並請他�
     print(response.choices[0].message.content)
     return assistant_reply
 
+def openai_in_weather(closest_WeatherDescription):
+    client = OpenAI(
+    api_key=("sk-proj-hQ5Lunj0YUPssFskrlxcT3BlbkFJvdiN4K5LWH1h0Xhzwomj"),
+)
+
+    response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": f"你負責判斷: {closest_WeatherDescription},建議使用者該攜帶哪些東西出門或是該注意什麼"}
+    ]
+    
+    )
+
+    assistant_reply = response.choices[0].message.content
+    print(response.choices[0].message.content)
+    return assistant_reply
+
 def main():
     # 步驟1：語音識別
     user_command = recognize_speech_from_microphone()
@@ -351,9 +368,14 @@ def main():
                     current_time = datetime.now()
                     closest_at, closest_WeatherDescription = get_closest_forecast(weather_data, current_time)
                     Wmessage0 = f"為您報告: {city_name} {town_name} {villageName} {str(closest_time)} 的氣象預報。體感溫度為: {closest_at} 度。{closest_WeatherDescription}"
-                    asyncio.run(text_to_speech(Wmessage0,"audio3"))
+                    asyncio.run(text_to_speech(Wmessage0))
                     print("體感溫度為:",closest_at,"度")
                     print(closest_WeatherDescription)
+                    ai_response_in_weather=openai_in_weather(closest_WeatherDescription)
+                    asyncio.run(text_to_speech(ai_response_in_weather))
+                    print(ai_response_in_weather)
+
+                    
                     
             except Exception as e:
                     traceback.print_exc()
