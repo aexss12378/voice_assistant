@@ -83,159 +83,159 @@ def play_audio(filename):  #播放mp3
     pygame.mixer.quit()    
 
 def get_weather(latitude, longitude):  #連接中央氣象局天氣api並回傳天氣格式
-    url = "https://opendata.cwa.gov.tw/linked/graphql"
-    headers = {
-        "Authorization": f"Bearer {WEATHER_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    query = '''
-    query town($longitude: Float!, $latitude: Float!) {
-      town (longitude: $longitude, latitude: $latitude) {
-        ctyCode,
-        ctyName,
-        townCode,
-        townName,
-        villageCode,
-        villageName,
-        forecast72hr {
-          locationName,
-          locationID,
-          latitude,
-          longitude,
-          AT {
-            description,
-            timePeriods {
-              dataTime,
-              apparentTemperature,
-              measures
-            }
-          },
-          CI {
-            description,
-            timePeriods {
-              dataTime,
-              comfortIndex,
-              measures
-            }
-          },
-          PoP6h {
-            description,
-            timePeriods {
-              startTime,
-              endTime,
-              probabilityOfPrecipitation,
-              measures
-            }
-          },
-          T {
-            timePeriods {
-              dataTime,
-              temperature,
-              measures
-            }
-          },
-          WeatherDescription {
-            description
-            timePeriods {
-              startTime,
-              endTime,
-              weatherDescription,
-              measures
-            }
-          },
-          Wx {
-            description,
-            timePeriods {
-              startTime,
-              endTime,
-              weather,
-              weatherIcon,
-              measures
-            }
-          }
-        },
-        forecastWeekday {
-          locationName,
-          locationID,
-          latitude,
-          longitude,
-          PoP12h {
-            description,
-            timePeriods {
-              startTime,
-              endTime,
-              probabilityOfPrecipitation,
-              measures
-            }
-          },
-          T {
-            description,
-            timePeriods {
-              startTime,
-              endTime,
-              temperature,
-              measures
-            }
-          },
-          MinT {
-            description,
-            timePeriods {
-              startTime,
-              endTime,
-              temperature,
-              measures
-            }
-          },
-          MaxT {
-            description,
-            timePeriods {
-              startTime,
-              endTime,
-              temperature,
-              measures
-            }
-          },
-          UVI {
-            description,
-            timePeriods {
-              startTime,
-              endTime,
-              UVIndex,
-              UVIDescription,
-              measures
-            }
-          },
-          WeatherDescription {
-            description
-            timePeriods {
-              startTime,
-              endTime,
-              weatherDescription,
-              measures
-            }
-          },
-          Wx {
-            description,
-            timePeriods {
-              startTime,
-              endTime,
-              weather,
-              weatherIcon,
-              measures
-            }
-          }
-        }
+  url = "https://opendata.cwa.gov.tw/linked/graphql"
+  headers = {
+    "Authorization": f"Bearer {WEATHER_API_KEY}",
+    "Content-Type": "application/json"
+  }
+  query = '''
+  query town($longitude: Float!, $latitude: Float!) {
+    town (longitude: $longitude, latitude: $latitude) {
+    ctyCode,
+    ctyName,
+    townCode,
+    townName,
+    villageCode,
+    villageName,
+    forecast72hr {
+      locationName,
+      locationID,
+      latitude,
+      longitude,
+      AT {
+      description,
+      timePeriods {
+        dataTime,
+        apparentTemperature,
+        measures
+      }
+      },
+      CI {
+      description,
+      timePeriods {
+        dataTime,
+        comfortIndex,
+        measures
+      }
+      },
+      PoP6h {
+      description,
+      timePeriods {
+        startTime,
+        endTime,
+        probabilityOfPrecipitation,
+        measures
+      }
+      },
+      T {
+      timePeriods {
+        dataTime,
+        temperature,
+        measures
+      }
+      },
+      WeatherDescription {
+      description
+      timePeriods {
+        startTime,
+        endTime,
+        weatherDescription,
+        measures
+      }
+      },
+      Wx {
+      description,
+      timePeriods {
+        startTime,
+        endTime,
+        weather,
+        weatherIcon,
+        measures
+      }
+      }
+    },
+    forecastWeekday {
+      locationName,
+      locationID,
+      latitude,
+      longitude,
+      PoP12h {
+      description,
+      timePeriods {
+        startTime,
+        endTime,
+        probabilityOfPrecipitation,
+        measures
+      }
+      },
+      T {
+      description,
+      timePeriods {
+        startTime,
+        endTime,
+        temperature,
+        measures
+      }
+      },
+      MinT {
+      description,
+      timePeriods {
+        startTime,
+        endTime,
+        temperature,
+        measures
+      }
+      },
+      MaxT {
+      description,
+      timePeriods {
+        startTime,
+        endTime,
+        temperature,
+        measures
+      }
+      },
+      UVI {
+      description,
+      timePeriods {
+        startTime,
+        endTime,
+        UVIndex,
+        UVIDescription,
+        measures
+      }
+      },
+      WeatherDescription {
+      description
+      timePeriods {
+        startTime,
+        endTime,
+        weatherDescription,
+        measures
+      }
+      },
+      Wx {
+      description,
+      timePeriods {
+        startTime,
+        endTime,
+        weather,
+        weatherIcon,
+        measures
+      }
       }
     }
-    '''
-    variables = {"longitude": float(longitude), "latitude": float(latitude)}
-    response = requests.post(url, json={"query": query, "variables": variables}, headers=headers)
-    
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print("Failed to get weather data.")
-        return None
+    }
+  }
+  '''
+  variables = {"longitude": float(longitude), "latitude": float(latitude)}
+  response = requests.post(url, json={"query": query, "variables": variables}, headers=headers)
+  
+  if response.status_code == 200:
+    return response.json()
+  else:
+    print("Failed to get weather data.")
+    return None
 
 def find_closest_time(data):  #找最接近現在的天氣預報時間
     now = datetime.now()
