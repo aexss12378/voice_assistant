@@ -13,34 +13,60 @@ from datetime import datetime, timedelta
 import traceback
 from openai import OpenAI
 import time
+from dotenv import load_dotenv
+import os
 
-def recognize_speech_from_microphone():  #語音辨識
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        print("請說點什麼...")
-        recognizer.adjust_for_ambient_noise(source)
-        audio = recognizer.listen(source)
-        
-        try:
-            text = recognizer.recognize_google(audio, language="zh-TW")
-            print("你說了: " + text)
-            return text
-        except sr.UnknownValueError:
-            print("Google 語音識別無法理解音頻")
-            return None
-        except sr.RequestError as e:
-            print("無法從 Google 語音識別服務請求結果; {0}".format(e))
-            return None
+# 載入環境變數
+load_dotenv()
 
-def get_news(api_key):  #連接新聞api並回傳新聞json
-    url = f"https://gnews.io/api/v4/top-headlines?&category=general&country=tw&max=10&apikey={api_key}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        print(response.json())
-        return response.json()['articles']
-    else:
-        print("Failed to retrieve news")
-        return None
+# 從環境變數中讀取API密鑰
+GNEWS_API_KEY = os.getenv('GNEWS_API_KEY')
+WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
+
+def recognize_speech_from_microphone():
+  """
+  Recognizes speech from the microphone and returns the recognized text.
+
+  Returns:
+    str: The recognized text from the speech input.
+
+  Raises:
+    UnknownValueError: If the speech cannot be recognized.
+    RequestError: If there is an error in the speech recognition service.
+
+  """
+  recognizer = sr.Recognizer()
+  with sr.Microphone() as source:
+    print("請說點什麼...")
+    recognizer.adjust_for_ambient_noise(source)
+    audio = recognizer.listen(source)
+    
+    try:
+      text = recognizer.recognize_google(audio, language="zh-TW")
+      print("你說了: " + text)
+      return text
+    except sr.UnknownValueError:
+      print("Google 語音識別無法理解音頻")
+      return None
+    except sr.RequestError as e:
+      print("無法從 Google 語音識別服務請求結果; {0}".format(e))
+      return None
+
+def get_news():
+  """
+  Connects to the news API and returns a JSON response containing news articles.
+
+  Returns:
+    list: A list of news articles in JSON format.
+  """
+  url = f"https://gnews.io/api/v4/top-headlines?&category=general&country=tw&max=10&apikey={GNEWS_API_KEY}"
+  response = requests.get(url)
+  if response.status_code == 200:
+    print(response.json())
+    return response.json()['articles']
+  else:
+    print("Failed to retrieve news")
+    return None
         
 async def text_to_speech(text):  #將文字轉成mp3檔
     communicate = edge_tts.Communicate(text, "zh-TW-YunJheNeural")
@@ -58,11 +84,9 @@ def play_audio(filename):  #播放mp3
 
 def get_weather(latitude, longitude):  #連接中央氣象局天氣api並回傳天氣格式
     url = "https://opendata.cwa.gov.tw/linked/graphql"
-    authorization = ""  #這裡要放中央氣象局的憑證
     headers = {
-        "Authorization": authorization,
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+        "Authorization": f"Bearer {WEATHER_API_KEY}",
+        "Content-Type": "application/json"
     }
     query = '''
     query town($longitude: Float!, $latitude: Float!) {
